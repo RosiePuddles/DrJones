@@ -1,7 +1,6 @@
 import subprocess
-from subprocess import call, Popen
+from subprocess import call
 from picamera import PiCamera, PiCameraCircularIO
-from time import sleep
 
 file_h264 = '/home/pi/Desktop/test.h264'
 file_mp4 = '/home/pi/Desktop/test.mp4'
@@ -36,21 +35,14 @@ if __name__ == "__main__":
         print('\r\nRasp_Pi => Video Converted! \r\n')
 
         # Play normal speed
-        # Popen is a subprocess, so it runs some
-        Popen(['omxplayer', file_mp4], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-              stderr=subprocess.PIPE, close_fds=True)
-        # Quick fix to make video play on top of everything else
-        sleep(2)
+        # Stop camera preview
         camera.stop_preview()
-        sleep(video_length * 1.2)
+        # Start replay (normal speed)
+        call(['omxplayer', file_mp4], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+             stderr=subprocess.PIPE, close_fds=True)
+        # Start replay (slow motion)xw
+        call(['omxplayer', slow_file_mp4], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+             stderr=subprocess.PIPE, close_fds=True)
         camera.start_preview()
-
-        # Slow motion
-        camera.annotate_text = 'NOW FOR SLOW MOTION REPLAY'
-        playProcess = Popen(['omxplayer', slow_file_mp4], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, close_fds=True)
-        sleep(4)
-        camera.stop_preview()
-        sleep(video_length * 2.4)
 
     camera.close()
