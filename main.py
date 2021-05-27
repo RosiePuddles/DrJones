@@ -6,7 +6,10 @@ file_mp4 = '/home/pi/Desktop/test.mp4'
 slow_file_mp4 = '/home/pi/Desktop/test_slow.mp4'
 video_length = 12
 
-camera = PiCamera(rotation=180, resolution=(1640, 922), framerate=40)
+camera = PiCamera()
+camera.rotation = 180
+camera.resolution = (1640, 922)
+camera.framerate = 40
 
 if __name__ == "__main__":
     stream = PiCameraCircularIO(camera, seconds=video_length)
