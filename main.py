@@ -1,5 +1,4 @@
-import subprocess
-from subprocess import call
+from subprocess import call, PIPE
 from picamera import PiCamera, PiCameraCircularIO
 
 file_h264 = '/home/pi/Desktop/test.h264'
@@ -38,11 +37,9 @@ if __name__ == "__main__":
         # Stop camera preview
         camera.stop_preview()
         # Start replay (normal speed)
-        call(['omxplayer', file_mp4], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-             stderr=subprocess.PIPE, close_fds=True)
+        call(['omxplayer', file_mp4], stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
         # Start replay (slow motion)xw
-        call(['omxplayer', slow_file_mp4], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-             stderr=subprocess.PIPE, close_fds=True)
+        call(['omxplayer', slow_file_mp4], stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
         camera.start_preview()
 
     camera.close()
